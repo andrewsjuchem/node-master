@@ -1,1 +1,1 @@
-# node-master-course
+# node-master

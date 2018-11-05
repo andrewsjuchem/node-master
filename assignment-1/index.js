@@ -1,18 +1,31 @@
 /*
  *@author: Andrews Juchem
- *@description: Server
+ *@description: RESTful API
  */
 
- //Dependency
- var http = require('http');
- var url = require('url');
+// Modules
+const fs = require('fs');
+const http = require('http');
+const https = require('https');
+const config = require('./config');
+const server = require('./lib/server');
 
- // The server should respond to all request with a string
-var server = http.createServer(function(req,res){
-    res.end('Hello World!\n');
+// Instantiate the HTTP server
+const httpServer = http.createServer(server.serverRequest);
+
+// Start the HTTP server, and listen on some port
+httpServer.listen(config.http.port,function(){
+    console.log('The HTTP server is running on port ' + config.http.port);
 });
 
- // Start the server, and have it listen on port 3000
-server.listen(3000,function(){
-    console.log("The server is listening on port 3000 now");
+// Instantiate the HTTPS server
+const httpsServerOptions = {
+    key: fs.readFileSync(config.https.keyFile),
+    cert: fs.readFileSync(config.https.certFile)
+};
+const httpsServer = https.createServer(httpsServerOptions,server.serverRequest);
+  
+// Start the HTTPS server
+httpsServer.listen(config.https.port,function(){
+   console.log('The HTTPS server is running on port ' + config.https.port);
 });

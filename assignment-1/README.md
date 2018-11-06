@@ -1,4 +1,4 @@
-# node-master
+# RESTful JSON API
 
 # Requirements
 

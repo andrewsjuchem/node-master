@@ -32,9 +32,11 @@ function serverRequest(req,res){
     let buffer = '';
     req.on('data', function(data) {
         buffer += decoder.write(data);
+        console.log( 'Buffer (data): \n' + buffer );
     });
     req.on('end', function() {
         buffer += decoder.end();
+        console.log( 'Buffer (end): \n' + buffer );
   
         // Route the handler
         let chosenHandler = router.getHandler(trimmedPath);

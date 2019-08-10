@@ -4,19 +4,19 @@
  */
 
 // Modules
- const handlers = require('./handler');
+ const endpoint = require('./endpoint');
 
-// Assign a handler to each valid route.
+// Assign a endpoint to each valid route.
 const router = {
-  ping: handlers.ping,
-  hello: handlers.hello,
+  ping: endpoint.ping,
+  hello: endpoint.hello,
 };
 
-// Check the router for a matching path for a handler. If one is not found, use the notFound handler instead.
-function getHandler(path){
+// Check the router for a matching path for a endpoint. If one is not found, use the notFound endpoint instead.
+function getEndpoint(path){
     return typeof(router[path]) !== 'undefined' 
         ? router[path] 
-        : handlers.notFound;
+        : endpoint.notFound;
 };
 
-module.exports.getHandler = getHandler;
+module.exports.getEndpoint = getEndpoint;

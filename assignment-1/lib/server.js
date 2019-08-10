@@ -9,7 +9,7 @@ const router = require('./router');
 const StringDecoder = require('string_decoder').StringDecoder;
 
 // All the server logic for both the HTTP and HTTPS server
-function serverRequest(req,res){
+function processRequest (req, res) {
 
     // Parse the url
     const parsedUrl = url.parse(req.url, true);
@@ -38,10 +38,10 @@ function serverRequest(req,res){
         buffer += decoder.end();
         console.log( 'Buffer (end): \n' + buffer );
   
-        // Route the handler
-        let chosenHandler = router.getHandler(trimmedPath);
+        // Route the endpoint
+        let chosenEndpoint = router.getEndpoint(trimmedPath);
   
-        // Construct the data object to send to the handler
+        // Construct the data object to send to the endpoint
         let data = {
           'trimmedPath' : trimmedPath,
           'queryStringObject' : queryStringObject,
@@ -50,13 +50,13 @@ function serverRequest(req,res){
           'payload' : buffer
         };
   
-        // Route the request to the handler specified in the router
-        chosenHandler(data,function(statusCode,payload){
+        // Route the request to the endpoint specified in the router
+        chosenEndpoint(data,function(statusCode,payload){
   
-          // Use the status code returned from the handler, or set the default status code to 200
+          // Use the status code returned from the endpoint, or set the default status code to 200
           let parsedStatusCode = typeof(statusCode) == 'number' ? statusCode : 200;
   
-          // Use the payload returned from the handler, or set the default payload to an empty object
+          // Use the payload returned from the endpoint, or set the default payload to an empty object
           let parsedPayload = typeof(payload) == 'object'? payload : {};
   
           // Convert the payload to a string
@@ -73,4 +73,4 @@ function serverRequest(req,res){
 
 };
 
-module.exports.serverRequest = serverRequest;
+module.exports.processRequest = processRequest;
